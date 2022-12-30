@@ -2,7 +2,7 @@ set -e
 
 if [ $# -ne 1 ]
   then
-    echo "usage: sh init.sh YOUR-VPS-DOMAIN\nexample: sh init.sh vps.dusmart.example.com"
+    echo "usage: bash init.sh YOUR-VPS-DOMAIN\nexample: bash init.sh vps.dusmart.example.com"
     exit 1
 fi
 
@@ -35,6 +35,8 @@ fi
 echo "== save below AllowedIPs to somewhere, you'll need it in your vpn client =="
 python3 ipcal.py ${ip}
 
+echo "== your secret id in v2ray =="
+echo $uuid
 echo "== creating configs =="
 mkdir v2fly-core
 mkdir -p nginx-certbot/user_conf.d
@@ -261,3 +263,9 @@ echo '{
 }' > client.json
 
 echo "== configs complete =="
+client=`echo '{"host":"'${domain}'","ps":"'${domain}'","net":"ws","add":"'${domain}'","aid":"0","id":"'${uuid}'","port":443,"path":"\/lazy","tls":"tls","type":"none"}' | base64`
+client=`echo $client | tr -d " "`
+client='vmess://'$client
+echo "== import this link to your mobile app or scan the qrcode below =="
+echo $client
+echo $client | qrencode -t ansiutf8
