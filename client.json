@@ -1,0 +1,165 @@
+{
+    "routing": {
+        "name": "bypasscn_private_apple",
+        "domainStrategy": "IPIfNonMatch",
+        "rules": [
+            {
+                "type": "field",
+                "inboundTag": [
+                    "wginbound"
+                ],
+                "outboundTag": "${YOUR-VPS-DOMAIN}"
+            },
+            {
+                "type": "field",
+                "outboundTag": "direct",
+                "domain": [
+                    "localhost",
+                    "domain:me.com",
+                    "domain:lookup-api.apple.com",
+                    "domain:icloud-content.com",
+                    "domain:icloud.com",
+                    "domain:cdn-apple.com",
+                    "domain:apple-cloudkit.com",
+                    "domain:apple.com",
+                    "domain:apple.co",
+                    "domain:aaplimg.com",
+                    "domain:guzzoni.apple.com",
+                    "geosite:cn"
+                ]
+            },
+            {
+                "type": "field",
+                "outboundTag": "direct",
+                "ip": [
+                    "geoip:private",
+                    "geoip:cn"
+                ]
+            },
+            {
+                "type": "field",
+                "outboundTag": "${YOUR-VPS-DOMAIN}",
+                "port": "0-65535"
+            }
+        ]
+    },
+    "inbounds": [
+        {
+            "listen": "127.0.0.1",
+            "protocol": "socks",
+            "settings": {
+                "ip": "127.0.0.1",
+                "auth": "noauth",
+                "udp": false
+            },
+            "tag": "socksinbound",
+            "port": 1082
+        },
+        {
+            "listen": "127.0.0.1",
+            "protocol": "http",
+            "settings": {
+                "timeout": 0
+            },
+            "tag": "httpinbound",
+            "port": 8002
+        },
+        {
+            "tag": "wginbound",
+            "protocol": "dokodemo-door",
+            "port": 51820,
+            "listen": "127.0.0.1",
+            "network": "udp",
+            "settings": {
+                "address": "10.13.13.1",
+                "port": 51820,
+                "network": "udp"
+            }
+        }
+    ],
+    "dns": {
+        "servers": [
+            "8.8.8.8"
+        ]
+    },
+    "log": {
+        "error": "",
+        "loglevel": "info",
+        "access": ""
+    },
+    "outbounds": [
+        {
+            "tag": "direct",
+            "protocol": "freedom",
+            "settings": {}
+        },
+        {
+            "sendThrough": "0.0.0.0",
+            "mux": {
+                "enabled": false,
+                "concurrency": 8
+            },
+            "protocol": "vmess",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "${YOUR-VPS-DOMAIN}",
+                        "users": [
+                            {
+                                "id": "${YOUR-V2RAY-UUID}",
+                                "alterId": 0,
+                                "security": "none",
+                                "level": 0
+                            }
+                        ],
+                        "port": 443
+                    }
+                ]
+            },
+            "tag": "${YOUR-VPS-DOMAIN}",
+            "streamSettings": {
+                "wsSettings": {
+                    "path": "/lazy",
+                    "headers": {}
+                },
+                "quicSettings": {
+                    "key": "",
+                    "header": {
+                        "type": "none"
+                    },
+                    "security": "none"
+                },
+                "tlsSettings": {
+                    "allowInsecure": false,
+                    "alpn": [
+                        "http/1.1"
+                    ],
+                    "serverName": "${YOUR-VPS-DOMAIN}",
+                    "allowInsecureCiphers": false
+                },
+                "httpSettings": {
+                    "path": ""
+                },
+                "kcpSettings": {
+                    "header": {
+                        "type": "none"
+                    },
+                    "mtu": 1350,
+                    "congestion": false,
+                    "tti": 20,
+                    "uplinkCapacity": 5,
+                    "writeBufferSize": 1,
+                    "readBufferSize": 1,
+                    "downlinkCapacity": 20
+                },
+                "tcpSettings": {
+                    "header": {
+                        "type": "none"
+                    }
+                },
+                "security": "tls",
+                "network": "ws"
+            }
+        }
+    ]
+}
