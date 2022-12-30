@@ -1,4 +1,100 @@
-{
+set -e
+
+if [ $# -ne 1 ]
+  then
+    echo "usage: sh init.sh YOUR-VPS-DOMAIN\nexample: sh init.sh vps.dusmart.example.com"
+    exit 1
+fi
+
+if [ -d "v2fly-core" ]; then
+    echo "== you should delete old v2fly-core first =="
+    exit 1
+fi
+if [ -d "nginx-certbot" ]; then
+    echo "== you should delete old nginx-certbot first =="
+    exit 1
+fi
+if [ -d "wireguard" ]; then
+    echo "== you should delete old wireguard first =="
+    exit 1
+fi
+if [ -f "client.json" ]; then 
+    echo "== you should delete old client.json first =="
+    exit 1
+fi
+
+uuid=`uuidgen`
+domain=$1
+ip=`dig +short ${domain} | head -n 1`
+
+if ! [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+    echo "bad domain, can not get ip by running dig +short ${domain}"
+    exit 1
+fi
+
+echo "== save below AllowedIPs to somewhere, you'll need it in your vpn client =="
+python3 ipcal.py ${ip}
+
+echo "== creating configs =="
+mkdir v2fly-core
+mkdir -p nginx-certbot/user_conf.d
+mkdir wireguard
+
+echo 'upstream v2fly {
+  server 10.13.128.1:1024;
+}
+server {
+    # Listen to port 443 on both IPv4 and IPv6.
+    listen 443 ssl default_server reuseport;
+    listen [::]:443 ssl default_server reuseport;
+
+    # Domain names this server should respond to.
+    server_name '${domain}';
+
+    # Load the certificate files.
+    ssl_certificate         /etc/letsencrypt/live/v2fly-cloudapp/fullchain.pem;
+    ssl_certificate_key     /etc/letsencrypt/live/v2fly-cloudapp/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/v2fly-cloudapp/chain.pem;
+
+    # Load the Diffie-Hellman parameter.
+    ssl_dhparam /etc/letsencrypt/dhparams/dhparam.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    add_header Strict-Transport-Security max-age=15768000;
+
+    location / {
+        proxy_set_header HOST $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_pass http://v2fly;
+    }
+
+}' >> nginx-certbot/user_conf.d/v2fly.conf
+
+echo '{
+    "log": {
+	"access": "/etc/v2ray/access.log",
+	"error": "/etc/v2ray/error.log",
+        "loglevel": "warning"
+    },
+    "inbounds": [{
+            "listen": "10.13.128.1",
+            "port": 1024,
+            "protocol": "vmess",
+            "settings": { "clients": [{ "id": "'${uuid}'" }]},
+            "streamSettings": {
+                "network": "ws",
+                "wsSettings": { "path": "/lazy" }
+            }
+    }],
+    "outbounds": [{ "protocol": "freedom" }]
+}' >> v2fly-core/config.json
+
+echo '{
     "routing": {
         "name": "bypasscn_private_apple",
         "domainStrategy": "IPIfNonMatch",
@@ -8,7 +104,7 @@
                 "inboundTag": [
                     "wginbound"
                 ],
-                "outboundTag": "${YOUR-VPS-DOMAIN}"
+                "outboundTag": "'${domain}'"
             },
             {
                 "type": "field",
@@ -38,7 +134,7 @@
             },
             {
                 "type": "field",
-                "outboundTag": "${YOUR-VPS-DOMAIN}",
+                "outboundTag": "'${domain}'",
                 "port": "0-65535"
             }
         ]
@@ -103,10 +199,10 @@
             "settings": {
                 "vnext": [
                     {
-                        "address": "${YOUR-VPS-DOMAIN}",
+                        "address": "'${domain}'",
                         "users": [
                             {
-                                "id": "${YOUR-V2RAY-UUID}",
+                                "id": "'${uuid}'",
                                 "alterId": 0,
                                 "security": "none",
                                 "level": 0
@@ -116,7 +212,7 @@
                     }
                 ]
             },
-            "tag": "${YOUR-VPS-DOMAIN}",
+            "tag": "'${domain}'",
             "streamSettings": {
                 "wsSettings": {
                     "path": "/lazy",
@@ -134,7 +230,7 @@
                     "alpn": [
                         "http/1.1"
                     ],
-                    "serverName": "${YOUR-VPS-DOMAIN}",
+                    "serverName": "'${domain}'",
                     "allowInsecureCiphers": false
                 },
                 "httpSettings": {
@@ -162,4 +258,6 @@
             }
         }
     ]
-}
+}' > client.json
+
+echo "== configs complete =="
