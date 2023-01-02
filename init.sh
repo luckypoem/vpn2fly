@@ -25,7 +25,7 @@ fi
 
 uuid=`uuidgen`
 domain=$1
-ip=`dig +short ${domain} | head -n 1`
+ip=`dig +short ${domain} | tail -n 1`
 
 if ! [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
     echo "bad domain, can not get ip by running dig +short ${domain}"
@@ -201,7 +201,7 @@ echo '{
             "settings": {
                 "vnext": [
                     {
-                        "address": "'${domain}'",
+                        "address": "'${ip}'",
                         "users": [
                             {
                                 "id": "'${uuid}'",
@@ -263,7 +263,7 @@ echo '{
 }' > client.json
 
 echo "== configs complete =="
-client=`echo '{"host":"'${domain}'","ps":"'${domain}'","net":"ws","add":"'${domain}'","aid":"0","id":"'${uuid}'","port":443,"path":"\/lazy","tls":"tls","type":"none"}' | base64`
+client=`echo '{"host":"'${ip}'","ps":"'${domain}'","net":"ws","add":"'${domain}'","aid":"0","id":"'${uuid}'","port":443,"path":"\/lazy","tls":"tls","type":"none"}' | base64`
 client=`echo $client | tr -d " "`
 client='vmess://'$client
 echo "== import this link to your mobile app or scan the qrcode below =="

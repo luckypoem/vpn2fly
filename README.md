@@ -1,21 +1,25 @@
 # vpn2fly
 
-vpn over v2ray disgused by wss, vpn is optional
+vpn over v2ray disguised by wss, vpn is optional
 
 ## why vpn2fly
 
-* **one shot** deploy
-* **one parameter**, other secrets are auto-generated at init stage
-* **certs** are **automatically** generated and updated
-* **disguise** with three layer, hard to be detected by GFW
-* **qrcode** or **clipboard link** generated for mobile client, pair in one shot
-* **global proxy** for you APPs by using vpn
+* **minimal config**
+  * **one shot** deploy: all handled by docker dompose
+  * **one shot** connect: qrcode or shareable link generated for mobile client
+  * **one parameter**: only domain is the necessary parameter
+* **safe**
+  * **certs** are **automatically** generated and updated
+  * secrets are auto-generated at init stage
+  * **disguise** with three layer, hard to be detected by GFW
+  * **global proxy** for all you APPs by using vpn
 
 ## prerequest
 
 * vps located abroad, ports 80,443,1024,51820 are free
 * domain resolution to your vps succeed
 * `docker compose` installed, docker network remain defaults
+* `dnsutils` installed, `dig` command is used for looking up dns record
 * [optional] `qrencode` installed for generating qrcode that can be imported by a mobile APP, ignore this if you want to import by clipboard link or add it mannually
 
 ## server side
@@ -36,7 +40,7 @@ vpn over v2ray disgused by wss, vpn is optional
 
 ### client init
 
-ignore steps after step 3 if you only want to use v2ray
+> ignore steps after step 3 if you only want to use v2ray
 
 1. `brew install v2ray`
 2. `cp client.json /opt/homebrew/etc/v2ray/config.json`
