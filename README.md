@@ -37,7 +37,7 @@
 2. `bash init.sh ${YOUR-DOMAIN}`
 3. `docker compose up -d`
 
-see step by step [tutorial](./azure-ubuntu-debian.md) on a purely new azure vm
+see step by step [tutorial](./azure-debian.md) on a purely new debian azure vm
 
 ## mobile client
 

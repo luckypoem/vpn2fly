@@ -38,8 +38,9 @@ git clone https://github.com/dusmart/vpn2fly.git && cd vpn2fly
 bash init.sh ${YOUR-DOMAIN} # use your own domain here to replace ${YOUR-DOMAIN}
 ```
 
-the success log will contain these important configs
+the success log will contain there important configs
 
+* \[Peer\] AllowedIPs: this will be used by your desktop's vpn(wireguard) config, you can regenerate this by `python3 ipcal.py ${YOUR-DOMAIN-IP}`
 * vmess link and a qrcode: you can scan this qrcode or copy the link and import it from clipboard to your mobile v2ray client APPs, your mobile phone will be able to use the v2ray
 * your secret id in v2ray: use this if you want to import the config to your phone mannually, add it by choose `VMESS` -> set `Address` to `your domain ip` -> `Port` remains default `443` -> set `ID` to `your secret id in v2ray` -> `Enable TLS` -> set `ServerAddress` to `your domain` -> set `Stream Setting` to `ws` -> set `Host` to `your domain` -> set `Path` to `/lazy`
 
