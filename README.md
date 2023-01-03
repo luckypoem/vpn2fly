@@ -1,6 +1,16 @@
-# vpn2fly
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
 
-(vpn over) v2ray disguised by wss
+<div align="center">
+  <h3 align="center">ONE-SHOT-SOLUTION-VPN-OVER-V2RAY</h3>
+
+  <p align="center">
+    vpn over v2ray disguised by wss, vpn is optional
+  </p>
+</div>
 
 ## why vpn2fly
 
@@ -24,7 +34,7 @@
 ## server side
 
 1. `git clone https://github.com/dusmart/vpn2fly.git && cd vpn2fly`
-2. `bash init.sh ${YOUR-DOMAIN}`, save the output
+2. `bash init.sh ${YOUR-DOMAIN}`, save the output until you finish set-up your client
 3. `docker compose up -d`
 
 see step by step [tutorial](./azure-ubuntu-debian.md) on a purely new azure vm
@@ -51,7 +61,14 @@ see step by step [tutorial](./azure-ubuntu-debian.md) on a purely new azure vm
     - [x] free iOS client recommendation
     - [ ] android client recommendation
     - [ ] windows client
-- [ ] one command for macOS's system proxy quick switch, copy [v2rayx's switch code](https://github.com/Cenmrev/V2RayX/blob/master/v2rayx_sysconf/main.m) and [install code](https://github.com/Cenmrev/V2RayX/blob/master/V2RayX/install_helper.sh) here
+- [ ] Add one command for macOS's system proxy quick switch, see [v2rayx's switch code](https://github.com/Cenmrev/V2RayX/blob/master/v2rayx_sysconf/main.m) and [install code](https://github.com/Cenmrev/V2RayX/blob/master/V2RayX/install_helper.sh) here
+
+## Acknowledgments
+
+* [Docker Compose](https://github.com/docker/compose)
+* [JonasAlfredsson/docker-nginx-certbot](https://github.com/JonasAlfredsson/docker-nginx-certbot)
+* [v2fly/v2ray-core](https://github.com/v2fly/v2ray-core)
+* [linuxserver/wireguard](https://github.com/linuxserver/docker-wireguard)
 
 ## some illustration for macos client usage
 
@@ -100,3 +117,33 @@ flowchart LR
         client--wss-->server;
     end    
 ```
+
+[contributors-shield]: https://img.shields.io/github/contributors/dusmart/vpn2fly.svg?style=for-the-badge
+[contributors-url]: https://github.com/dusmart/vpn2fly/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/dusmart/vpn2fly.svg?style=for-the-badge
+[forks-url]: https://github.com/dusmart/vpn2fly/network/members
+[stars-shield]: https://img.shields.io/github/stars/dusmart/vpn2fly.svg?style=for-the-badge
+[stars-url]: https://github.com/dusmart/vpn2fly/stargazers
+[issues-shield]: https://img.shields.io/github/issues/dusmart/vpn2fly.svg?style=for-the-badge
+[issues-url]: https://github.com/dusmart/vpn2fly/issues
+[license-shield]: https://img.shields.io/github/license/dusmart/vpn2fly.svg?style=for-the-badge
+[license-url]: https://github.com/dusmart/vpn2fly/blob/main/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/othneildrew
+[product-screenshot]: images/screenshot.png
+[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Next-url]: https://nextjs.org/
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
+[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
+[Vue-url]: https://vuejs.org/
+[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
+[Angular-url]: https://angular.io/
+[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
+[Svelte-url]: https://svelte.dev/
+[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
+[Laravel-url]: https://laravel.com
+[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
+[Bootstrap-url]: https://getbootstrap.com
+[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
+[JQuery-url]: https://jquery.com 

@@ -263,7 +263,7 @@ echo '{
 }' > client.json
 
 echo "== configs complete =="
-client=`echo '{"host":"'${ip}'","ps":"'${domain}'","net":"ws","add":"'${domain}'","aid":"0","id":"'${uuid}'","port":443,"path":"\/lazy","tls":"tls","type":"none"}' | base64`
+client=`echo '{"host":"'${domain}'","ps":"'${domain}'","net":"ws","add":"'${domain}'","aid":"0","id":"'${uuid}'","port":443,"path":"\/lazy","tls":"tls","type":"none"}' | base64`
 client=`echo $client | tr -d " "`
 client='vmess://'$client
 echo "== import this link to your mobile app or scan the qrcode below =="

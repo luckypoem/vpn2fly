@@ -65,5 +65,5 @@ you should wait for a while at the first time, because applying cert will take y
 ## about the logs
 
 * `docker logs -f wireguard` will show you the default vpn client config file, you should see a qrcode here, it shows the content of `vpn2fly/wireguard/peer1/peer1.conf`
-* `docker logs -f v2fly-core` will show the `Reading config: /etc/v2ray/config.json`, you can view v2ray's access log in `vpn2fly/v2fly-core`
+* `docker logs -f v2fly-core` will show the `Reading config: /etc/v2ray/config.json`, you can view v2ray's access log in `vpn2fly/v2fly-core/access.log`
 * `docker logs -f nginx-certbot` will show that it could not find the cert and has applied new cert for you, you can also see the logs from nginx here
