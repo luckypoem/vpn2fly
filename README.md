@@ -44,7 +44,7 @@ see step by step [tutorial](./azure-debian.md) on a purely new debian azure vm
 * download any v2ray client to your phone
   * [OneClick](https://apps.apple.com/us/app/oneclick-safe-easy-fast/id1545555197) for iOS
   * [SagerNet](https://github.com/SagerNet/SagerNet) for Android
-* you can copy the wmess link at init stage, choose **import from clipboard**
+* you can copy the vmess link at init stage, choose **import from clipboard**
 * you can also scan the qrcode generated at init stage
 
 ## macOS client
