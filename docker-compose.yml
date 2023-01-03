@@ -52,9 +52,11 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
+      - PEERDNS=8.8.8.8
       - TZ=Europe/London
       - SERVERURL=127.0.0.1
       - PEERS=1
+      - SERVERPORT=51821
       - INTERNAL_SUBNET=10.13.13.0
     volumes:
       - ./wireguard:/config

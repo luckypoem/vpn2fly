@@ -165,7 +165,7 @@ echo '{
         {
             "tag": "wginbound",
             "protocol": "dokodemo-door",
-            "port": 51820,
+            "port": 51821,
             "listen": "127.0.0.1",
             "network": "udp",
             "settings": {
