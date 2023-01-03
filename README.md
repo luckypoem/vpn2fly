@@ -12,7 +12,7 @@
   </p>
 </div>
 
-## why vpn2fly
+## Why vpn2fly
 
 * **minimal steps**
   * **one shot** init: only *domain* is the necessary parameter
@@ -31,7 +31,7 @@
 * successfuly domain resolution to your vps
 * `docker compose`, `dnsutils`, `qrencode`
 
-## server side
+## Server Side
 
 1. `git clone https://github.com/dusmart/vpn2fly.git && cd vpn2fly`
 2. `bash init.sh ${YOUR-DOMAIN}`
@@ -39,7 +39,7 @@
 
 see step by step [tutorial](./azure-debian.md) on a purely new debian azure vm
 
-## mobile client
+## Mobile Client
 
 * download any v2ray client to your phone
   * [OneClick](https://apps.apple.com/us/app/oneclick-safe-easy-fast/id1545555197) for iOS
@@ -47,7 +47,7 @@ see step by step [tutorial](./azure-debian.md) on a purely new debian azure vm
 * you can copy the vmess link at init stage, choose **import from clipboard**
 * you can also scan the qrcode generated at init stage
 
-## macOS client
+## MacOS Client
 
 1. `brew install v2ray`
 2. copy the `client.json` generated on server to your mac, v2ray's config file is usually located at `/opt/homebrew/etc/v2ray/config.json`
@@ -55,23 +55,24 @@ see step by step [tutorial](./azure-debian.md) on a purely new debian azure vm
 4. install the free [wireguard](https://apps.apple.com/us/app/wireguard/id1451685025?mt=12) in app store
 5. add the config in `vpn2fly/wireguard/peer1/peer1.conf` on server to client side
 
-## windows client
+## Windows Client
 
 1. download [v2ray-core](https://github.com/v2fly/v2ray-core/releases) and extract, version must be lower than **5.0** such as [4.45.2](https://github.com/v2fly/v2ray-core/releases/download/v4.45.2/v2ray-windows-64.zip)
 2. copy the client.json generated on server to your v2ray-core folder
 3. `v2ray.exe -config client.json`. If it prompts *An attempt was made to access a socket in a way forbidden by its access permiss*, restart Internet Connection Sharing(ICS) in service.msc or use command `net stop hns && net start hns` , it may help you
 4. install the free [wireguard](https://www.wireguard.com/install/)
-5. add the config in vpn2fly/wireguard/peer1/peer1.conf on server to client side
+5. add the config in `vpn2fly/wireguard/peer1/peer1.conf` on server to client side
 
 ---
 
 ## Roadmap
 
 - [x] Remove all mannual configs from macos VPN client
-- [ ] Add more client tutorial
-    - [x] free iOS client recommendation
-    - [x] free android client recommendation
-    - [ ] windows client
+- [x] Add more client tutorial
+    - [x] free macOS client
+    - [x] free iOS client
+    - [x] free android client
+    - [x] free windows client
 - [ ] Add one command for macOS's system proxy quick switch, see [v2rayx's switch code](https://github.com/Cenmrev/V2RayX/blob/master/v2rayx_sysconf/main.m) and [install code](https://github.com/Cenmrev/V2RayX/blob/master/V2RayX/install_helper.sh) here
 
 ## Acknowledgments
@@ -81,7 +82,7 @@ see step by step [tutorial](./azure-debian.md) on a purely new debian azure vm
 * [v2fly/v2ray-core](https://github.com/v2fly/v2ray-core)
 * [linuxserver/wireguard](https://github.com/linuxserver/docker-wireguard)
 
-## some illustration for macos client usage
+## Illustration for MacOS Client Usage
 
 ### how to find v2ray's default config file location
 
