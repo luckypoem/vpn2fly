@@ -1,4 +1,4 @@
-# setup on pure new linux server on azure
+# setup on pure new debian server on azure
 
 ## create vm
 
@@ -9,18 +9,23 @@
 
 ## install docker compose and other tools
 
-ref from docker doc [here](https://docs.docker.com/engine/install/debian/)
+ref from docker doc [here](https://docs.docker.com/engine/install/) if you're not using debian
 
 ```sh
 sudo apt-get update
-sudo apt-get install -y ca-certificates curl gnupg lsb-release qrencode dnsutils
+sudo apt-get install -y ca-certificates curl gnupg lsb-release 
 sudo mkdir -p /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 echo   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+```
 
+## install some tools
+
+```sh
+sudo apt-get install -y qrencode dnsutils
 sudo usermod -aG docker ${USER}
 ```
 
@@ -42,6 +47,7 @@ the success log will contain there important configs
 ## run the containers in the background
 
 ```sh
+cd vpn2fly
 docker compose up -d
 ```
 
@@ -64,6 +70,6 @@ you should wait for a while at the first time, because applying cert will take y
 
 ## about the logs
 
-* `docker logs -f wireguard` will show you the default vpn client config file, you should see a qrcode here, it shows the content of `vpn2fly/wireguard/peer1/peer1.conf`
+* `docker logs -f wireguard` will show you the vpn client config file, you should see a qrcode here, it is actually the content of `vpn2fly/wireguard/peer1/peer1.conf`
 * `docker logs -f v2fly-core` will show the `Reading config: /etc/v2ray/config.json`, you can view v2ray's access log in `vpn2fly/v2fly-core/access.log`
 * `docker logs -f nginx-certbot` will show that it could not find the cert and has applied new cert for you, you can also see the logs from nginx here

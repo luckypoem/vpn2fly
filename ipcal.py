@@ -16,5 +16,4 @@ for x in exclude:
             new.append(y)
     result = new
 
-print('[Peer] AllowedIPs: ')
 print(','.join(str(x) for x in sorted(result)))

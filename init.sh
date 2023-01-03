@@ -32,8 +32,7 @@ if ! [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
     exit 1
 fi
 
-echo "== save below AllowedIPs to somewhere, you'll need it in your vpn client =="
-python3 ipcal.py ${ip}
+allowedips=`python3 ipcal.py ${ip}`
 
 echo "== your secret id in v2ray =="
 echo $uuid
@@ -261,6 +260,77 @@ echo '{
         }
     ]
 }' > client.json
+
+echo 'version: "3"
+
+networks:
+  vpn2fly:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.13.0.0/16
+
+services:
+  nginx-certbot:
+    image: jonasal/nginx-certbot:3.2
+    container_name: nginx-certbot
+    environment:
+      - CERTBOT_EMAIL=yourname@gmail.com # write your mail here, receive notify from cert provider
+    volumes:
+      - ./nginx-certbot/nginx_secrets:/etc/letsencrypt
+      - ./nginx-certbot/user_conf.d:/etc/nginx/user_conf.d
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      vpn2fly:
+        ipv4_address: 10.13.128.2
+    restart: unless-stopped
+
+  v2fly-core:
+    image: v2fly/v2fly-core:v4.45.2
+    depends_on:
+      - nginx-certbot
+    container_name: v2fly-core
+    environment:
+      - V2RAY_VMESS_AEAD_FORCED=false
+    volumes:
+      - ./v2fly-core:/etc/v2ray
+    ports:
+      - 1024:1024
+    networks:
+      vpn2fly:
+        ipv4_address: 10.13.128.1
+    restart: unless-stopped
+
+  wireguard:
+    image: linuxserver/wireguard:1.0.20210914
+    depends_on:
+      - v2fly-core
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - PEERDNS=8.8.8.8
+      - TZ=Europe/London
+      - SERVERURL=127.0.0.1
+      - PEERS=1
+      - ALLOWEDIPS='${allowedips}'
+      - SERVERPORT=51821
+      - INTERNAL_SUBNET=10.13.13.0
+    volumes:
+      - ./wireguard:/config
+    ports:
+      - 51820:51820/udp
+    networks:
+      vpn2fly:
+        ipv4_address: 10.13.13.1    
+    restart: unless-stopped
+' > docker-compose.yml
 
 echo "== configs complete =="
 client=`echo '{"host":"'${domain}'","ps":"'${domain}'","net":"ws","add":"'${domain}'","aid":"0","id":"'${uuid}'","port":443,"path":"\/lazy","tls":"tls","type":"none"}' | base64`
