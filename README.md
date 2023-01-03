@@ -55,6 +55,14 @@ see step by step [tutorial](./azure-debian.md) on a purely new debian azure vm
 4. install the free [wireguard](https://apps.apple.com/us/app/wireguard/id1451685025?mt=12) in app store
 5. add the config in `vpn2fly/wireguard/peer1/peer1.conf` on server to client side
 
+## windows client
+
+1. download [v2ray-core](https://github.com/v2fly/v2ray-core/releases) and extract, version must be lower than **5.0** such as [4.45.2](https://github.com/v2fly/v2ray-core/releases/download/v4.45.2/v2ray-windows-64.zip)
+2. copy the client.json generated on server to your v2ray-core folder
+3. `v2ray.exe -config client.json`. If it prompts *An attempt was made to access a socket in a way forbidden by its access permiss*, restart Internet Connection Sharing(ICS) in service.msc or use command `net stop hns && net start hns` , it may help you
+4. install the free [wireguard](https://www.wireguard.com/install/)
+5. add the config in vpn2fly/wireguard/peer1/peer1.conf on server to client side
+
 ---
 
 ## Roadmap
